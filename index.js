@@ -1,6 +1,7 @@
 import ExcelJs from 'exceljs';
 
 async function processFile(file) {
+  const filename = file.substring(0, file.length - 5);
   const units = ['mbps', 'gbps'];
   let columnIndices = {
     servicio: 0,
@@ -115,37 +116,31 @@ async function processFile(file) {
 
   console.log(columnIndices);
 
-  // //console.log(serviceColumn);
-  // // const services = worksheet.getColumn(serviceColumn);
-  // // services.eachCell((cell) => {
-  // //   const cellValues = cell.value.split(' ');
-  // //   const values = cellValues.filter((value) => {
-  // //     if (!isNaN(value)) {
-  // //       return value;
-  // //     }
-  // //   });
-  // // });
+  //Obteninedo datos de servicios
 
-  // worksheet.eachRow((row, rowNumber) => {
-  //   if (rowNumber === 1) return;
-  //   const service = row.getCell(8).value.split(' ');
-  //   const serviceValue = service.find((value) => {
-  //     if (!isNaN(value)) {
-  //       return value;
-  //     }
-  //   });
+  const rows = worksheet.getRows(2, worksheet.rowCount - 1);
 
-  //   const serviceUnit = service.find((value) => {
-  //     if (units.includes(value.toLowerCase())) return value;
-  //   });
+  rows?.forEach((row, index) => {
+    const servicio = row
+      .getCell(columnIndices.servicio)
+      .value?.toString()
+      .toLocaleLowerCase();
+    // busca coincidencia en arreglo de enlaces
 
-  //   row.getCell(23).value = `${serviceValue} ${serviceUnit}`;
-  // });
+    let found = false;
 
-  // worksheet.eachRow((row) => console.log(row.getCell(23).value));
-  await workbook.xlsx.writeFile(
-    'data\\Informe_vip_bco_guayaquil_202601_modified.xlsx',
-  );
+    capacidades.forEach((capacidad) => {
+      if (servicio.includes(capacidad)) {
+        found = true;
+        row.getCell(columnIndices.capacidad).value = capacidad;
+      }
+    });
+    if (!found) {
+      row.getCell(columnIndices.capacidad).value = servicio;
+    }
+  });
+
+  await workbook.xlsx.writeFile(`${filename}_modified.xlsx`);
 }
 
-processFile('data\\Informe_vip_bco_guayaquil_202601.xlsx');
+processFile('data/Informe_vip_bco_guayaquil_202601.xlsx');
