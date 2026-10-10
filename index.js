@@ -1,8 +1,16 @@
 import ExcelJs from 'exceljs';
 
-async function processFile(file) {
-  const filename = file.substring(0, file.length - 5);
+let fileToProcess = process.argv[2];
+let dateReference = process.argv[3];
+
+async function processFile(fileName, dateReference) {
+  const fechaMesAnterior = new Date(dateReference);
+
   const units = ['mbps', 'gbps'];
+  let fechaDesde = new Date(0);
+  let fechaAlta = new Date(0);
+  let count = 0;
+
   let columnIndices = {
     servicio: 0,
     capacidad: 0,
@@ -40,7 +48,7 @@ async function processFile(file) {
 
   const workbook = new ExcelJs.Workbook();
   try {
-    await workbook.xlsx.readFile(file);
+    await workbook.xlsx.readFile(fileToProcess);
   } catch (error) {
     console.log(`Runtime error: ${error.message}`);
     return;
@@ -117,10 +125,11 @@ async function processFile(file) {
   console.log(columnIndices);
 
   //Obteninedo datos de servicios
-
   const rows = worksheet.getRows(2, worksheet.rowCount - 1);
+  console.log('Procesando registros...');
 
   rows?.forEach((row, index) => {
+    count++;
     const servicio = row
       .getCell(columnIndices.servicio)
       .value?.toString()
@@ -138,9 +147,61 @@ async function processFile(file) {
     if (!found) {
       row.getCell(columnIndices.capacidad).value = servicio;
     }
+    //determinando si servicio es nuevo
+
+    if (row.getCell(columnIndices.fechaDesde).value) {
+      fechaAlta = new Date(row.getCell(columnIndices.fechaAlta));
+      fechaDesde = new Date(row.getCell(columnIndices.fechaDesde));
+
+      // console.log(
+      //   fechaAlta.toString(),
+      //   fechaDesde.toString(),
+      //   fechaMesAnterior.toString(),
+      // );
+
+      if (fechaAlta < fechaMesAnterior) {
+        row.getCell(columnIndices.nuevoServicio).value = 'NO';
+      }
+      if (fechaAlta >= fechaMesAnterior && fechaDesde > fechaMesAnterior) {
+        row.getCell(columnIndices.nuevoServicio).value = 'SI';
+      }
+
+      if (
+        fechaAlta >= fechaMesAnterior &&
+        fechaDesde.getUTCMonth() === fechaMesAnterior.getUTCMonth()
+      ) {
+        row.getCell(columnIndices.nuevoServicio).value = 'SI Proporcional';
+      }
+    } else {
+      fechaAlta = new Date(row.getCell(columnIndices.fechaAlta));
+      if (fechaAlta < fechaMesAnterior) {
+        row.getCell(columnIndices.nuevoServicio).value = 'NO';
+      }
+      if (fechaAlta >= fechaMesAnterior) {
+        row.getCell(columnIndices.nuevoServicio).value = 'SI';
+      }
+
+      const rubro = row.getCell(columnIndices.rubro).value;
+
+      const specialsRubros = [
+        'Instalacion',
+        'Suscripcion',
+        'Instalación',
+        'Suscripción',
+      ];
+
+      specialsRubros.some((word) => {
+        if (rubro.normalize('NFC').includes(word)) {
+          row.getCell(columnIndices.nuevoServicio).value = 'SI Suscripcion';
+        }
+      });
+    }
   });
 
-  await workbook.xlsx.writeFile(`${filename}_modified.xlsx`);
+  console.log(`Registros procesados ${count}`);
+  await workbook.xlsx.writeFile(
+    `${fileToProcess.substring(0, fileToProcess.length - 5)}_modified.xlsx`,
+  );
 }
 
-processFile('data/Informe_vip_bco_guayaquil_202601.xlsx');
+processFile(fileToProcess, dateReference);
