@@ -7,11 +7,10 @@ const SPECIAL_RUBROS = [
 ];
 
 function tipoFacturacion(fechaAlta, fechaDesde) {
-  //si fecha Alta < fechaDesde -> Corriente
-  if (fechaAlta < fechaDesde) return 'Corriente';
-
   //si fecha alta y fechadesde sameMonth es true -> proporcional
   if (sameMonth(fechaAlta, fechaDesde)) return 'Proporcional';
+  //si fecha Alta < fechaDesde -> Corriente
+  if (fechaAlta < fechaDesde) return 'Corriente';
 }
 
 function esNuevoServicio(fechaAlta, inicioMesAnterior) {
