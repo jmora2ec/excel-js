@@ -8,6 +8,10 @@ const SPECIAL_RUBROS = [
 
 //check if 2 dates are in the same month of the year
 
+/**
+ * @param {Date} a
+ * @param {Date} b
+ */
 function sameMonth(a, b) {
   return (
     a.getUTCMonth() === b.getUTCMonth() &&
@@ -15,6 +19,10 @@ function sameMonth(a, b) {
   );
 }
 
+/**
+ * @param {  Date} fechaAlta
+ * @param {Date} fechaDesde
+ */
 function tipoFacturacion(fechaAlta, fechaDesde) {
   //si fecha alta y fechadesde sameMonth es true -> proporcional
   if (sameMonth(fechaAlta, fechaDesde) && fechaAlta <= fechaDesde)
@@ -25,11 +33,18 @@ function tipoFacturacion(fechaAlta, fechaDesde) {
   return 'No Determinado';
 }
 
+/**
+ * @param {  Date} fechaAlta
+ * @param { Date} inicioMesAnterior
+ */
 function esNuevoServicio(fechaAlta, inicioMesAnterior) {
   return fechaAlta >= inicioMesAnterior;
 }
 
 //busca formato XX mbps o XX gbps en cadena de caracteres
+/**
+ * @param {string | undefined} serviceName
+ */
 function extractCapacity(serviceName, pattern = CAPACITY_REGEX) {
   if (serviceName === undefined || serviceName === '') {
     return 'null';
@@ -44,6 +59,9 @@ function extractCapacity(serviceName, pattern = CAPACITY_REGEX) {
 }
 
 //valida que el formato sea adecuado
+/**
+ * @param {string} dateString
+ */
 function isValidDateString(dateString) {
   // Assumes YYYY-MM-DD format
   const regex = /^\d{4}-\d{2}-\d{2}$/;
