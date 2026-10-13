@@ -70,7 +70,7 @@ async function processFile(fileName, previousCycleStart) {
   });
 
   //Recuperarndo indices de columnas para referencias
-  console.log('Recuperarndo indices de columnas');
+  console.log('Recuperando indices de columnas');
 
   worksheet.eachRow((row, rowNumber) => {
     if (rowNumber > 1) return;
@@ -107,7 +107,7 @@ async function processFile(fileName, previousCycleStart) {
 
   console.log(columnIndices);
 
-  //Obteninedo datos de servicios
+  //Obteniendo datos de servicios
   const rows = worksheet.getRows(2, worksheet.rowCount - 1);
   console.log('Procesando registros...');
 
@@ -142,6 +142,8 @@ async function processFile(fileName, previousCycleStart) {
 
       if (SPECIAL_RUBROS.some((word) => rubroText.includes(word))) {
         row.getCell(columnIndices.tipoFacturacion).value = 'Suscripcion';
+      } else {
+        row.getCell(columnIndices.tipoFacturacion).value = 'Otro';
       }
     }
   });

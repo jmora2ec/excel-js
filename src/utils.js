@@ -6,24 +6,27 @@ const SPECIAL_RUBROS = [
   'Suscripción',
 ];
 
-function tipoFacturacion(fechaAlta, fechaDesde) {
-  //si fecha alta y fechadesde sameMonth es true -> proporcional
-  if (sameMonth(fechaAlta, fechaDesde)) return 'Proporcional';
-  //si fecha Alta < fechaDesde -> Corriente
-  if (fechaAlta < fechaDesde) return 'Corriente';
-}
-
-function esNuevoServicio(fechaAlta, inicioMesAnterior) {
-  return fechaAlta >= inicioMesAnterior;
-}
-
-//check if 2 dates are in the same month
+//check if 2 dates are in the same month of the year
 
 function sameMonth(a, b) {
   return (
     a.getUTCMonth() === b.getUTCMonth() &&
     a.getUTCFullYear() === b.getUTCFullYear()
   );
+}
+
+function tipoFacturacion(fechaAlta, fechaDesde) {
+  //si fecha alta y fechadesde sameMonth es true -> proporcional
+  if (sameMonth(fechaAlta, fechaDesde) && fechaAlta <= fechaDesde)
+    return 'Proporcional';
+  //si fecha Alta < fechaDesde -> Corriente
+  if (fechaAlta < fechaDesde) return 'Corriente';
+
+  return 'No Determinado';
+}
+
+function esNuevoServicio(fechaAlta, inicioMesAnterior) {
+  return fechaAlta >= inicioMesAnterior;
 }
 
 //busca formato XX mbps o XX gbps en cadena de caracteres
@@ -58,11 +61,6 @@ function isValidDateString(dateString) {
     date.getDate() === day
   );
 }
-
-// const date1 = new Date('2025-12-01');
-// const date2 = new Date('2025-12-15');
-
-// console.log(sameMonth(date1, date2));
 
 export {
   extractCapacity,
