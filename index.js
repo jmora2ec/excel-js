@@ -36,6 +36,7 @@ async function processFile(fileName, previousCycleStart) {
   try {
     await workbook.xlsx.readFile(fileName);
   } catch (error) {
+    // @ts-ignore
     console.log(`Runtime error: ${error.message}`);
     return;
   }
