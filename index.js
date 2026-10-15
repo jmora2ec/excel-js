@@ -63,11 +63,8 @@ async function processFile(fileName, previousCycleStart) {
           ['Tipo_Facturacion'],
         );
       }
-
-      if (cell.value?.toString().toLocaleUpperCase() === 'NOMSUC') {
-        worksheet.spliceColumns(colNumber + 1, 0, ['Nombre_Sucursal']);
-      }
     });
+    worksheet.spliceColumns(worksheet.columnCount - 1, 0, ['Nombre_Sucursal']);
   });
 
   //Recuperarndo indices de columnas para referencias
