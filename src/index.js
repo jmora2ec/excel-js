@@ -6,11 +6,15 @@ import {
   SPECIAL_RUBROS,
   esNuevoServicio,
   tipoFacturacion,
-} from './src/utils.js';
+} from './utils.js';
 
 let fileToProcess = process.argv[2];
 let previousBillingCycleStart = process.argv[3];
 
+/**
+ * @param {string} fileName
+ * @param {string} previousCycleStart
+ */
 async function processFile(fileName, previousCycleStart) {
   if (!isValidDateString(previousCycleStart)) {
     console.log(
