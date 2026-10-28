@@ -22,24 +22,21 @@ async function processFile(fileName, previousCycleStart) {
   const fechaInicioMesAnterior = new Date(previousCycleStart);
 
   const workbook = await getWorkbook(fileName);
-
   const worksheet = workbook.worksheets[0];
 
   //add outputColumns(ws)
   console.log(`Determinando donde insertar nuevas columnas`);
-
   const outputColumns = addOutputColumns(worksheet);
-
-  //Recuperarndo indices de columnas para referencias
   console.log(outputColumns);
 
+  console.log(`Determinando columnas de datos actuales`);
   const inputColumns = getColumnIndices(worksheet);
   console.log(inputColumns);
 
   //process Rows
   //Obteniendo datos de servicios
-  const rows = worksheet.getRows(2, worksheet.rowCount - 1);
   console.log('Procesando registros...');
+  const rows = worksheet.getRows(2, worksheet.rowCount - 1);
 
   let count = 0;
 
