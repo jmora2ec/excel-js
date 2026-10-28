@@ -1,4 +1,5 @@
 import ExcelJs from 'exceljs';
+import { getWorkbook } from './excel/workbook.js';
 import {
   extractCapacity,
   isValidDateString,
@@ -6,7 +7,7 @@ import {
   SPECIAL_RUBROS,
   esNuevoServicio,
   tipoFacturacion,
-} from './utils.js';
+} from './utils/utils.js';
 
 let fileToProcess = process.argv[2];
 let previousBillingCycleStart = process.argv[3];
@@ -36,14 +37,7 @@ async function processFile(fileName, previousCycleStart) {
     nombreSucursal: 0,
   };
 
-  const workbook = new ExcelJs.Workbook();
-  try {
-    await workbook.xlsx.readFile(fileName);
-  } catch (error) {
-    // @ts-ignore
-    console.log(`Runtime error: ${error.message}`);
-    return;
-  }
+  const workbook = await getWorkbook(fileName);
 
   //selecting the ws
   const worksheet = workbook.worksheets[0];
