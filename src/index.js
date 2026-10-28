@@ -1,13 +1,8 @@
 import ExcelJs from 'exceljs';
 import { getWorkbook } from './excel/workbook.js';
-import {
-  extractCapacity,
-  isValidDateString,
-  CAPACITY_REGEX,
-  SPECIAL_RUBROS,
-  esNuevoServicio,
-  tipoFacturacion,
-} from './utils/utils.js';
+import { isValidDateString } from './utils/date.js';
+import { esNuevoServicio, extractCapacity } from './domain/services.js';
+import { tipoFacturacion, SPECIAL_RUBROS } from './domain/billing.js';
 
 let fileToProcess = process.argv[2];
 let previousBillingCycleStart = process.argv[3];
@@ -111,10 +106,7 @@ async function processFile(fileName, previousCycleStart) {
     count++;
     const servicio = row.getCell(columnIndices.servicio).value?.toString();
     // Determinando capacidad de servicios en nueva columna
-    row.getCell(columnIndices.capacidad).value = extractCapacity(
-      servicio,
-      CAPACITY_REGEX,
-    );
+    row.getCell(columnIndices.capacidad).value = extractCapacity(servicio);
 
     //determinando si servicio es nuevo
 
