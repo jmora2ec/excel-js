@@ -9,7 +9,7 @@ export function processRows(
 ) {
   let count = 0;
   worksheet.eachRow((row, rowNumber) => {
-    if (rowNumber == 1) return;
+    if (rowNumber === 1) return;
     const data = readRow(row, inputColumns);
     const result = calculateRow(row, data, previousCycleDate);
     writeRow(row, outputColumns, result);

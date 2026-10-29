@@ -14,7 +14,7 @@ function esNuevoServicio(fechaAlta, inicioMesAnterior) {
  */
 function extractCapacity(serviceName, pattern = CAPACITY_REGEX) {
   if (serviceName === undefined || serviceName === '') {
-    return 'null';
+    return null;
   }
 
   const match = serviceName.match(pattern);

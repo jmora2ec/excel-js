@@ -7,7 +7,7 @@ async function getWorkbook(fileName = 'sample.xlsx') {
     return workbook;
   } catch (error) {
     // @ts-ignore
-    throw new Error(`Can not open file ${fileName}`);
+    throw new Error(`Can not open file ${fileName}`, { cause: error });
   }
 }
 

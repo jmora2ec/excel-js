@@ -15,7 +15,7 @@ async function processFile(fileName, previousCycleStart) {
     console.log(
       'Fecha o formato fecha mes anterior no es correcto, ingrese yyyy-mm-dd',
     );
-    return;
+    throw new Error('Formato o fecha ciclo anterior no válido.');
   }
 
   const fechaInicioMesAnterior = new Date(previousCycleStart);

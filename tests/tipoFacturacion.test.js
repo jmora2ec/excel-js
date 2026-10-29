@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { tipoFacturacion } from '../src/utils.js';
+import { tipoFacturacion } from '../src/domain/billing.js';
 
 test('Proporcional when alta equal desde', () => {
   assert.equal(
