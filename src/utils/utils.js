@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 //check if 2 dates are in the same month of the year
 
 /**
@@ -33,4 +35,12 @@ function isValidDateString(dateString) {
   );
 }
 
-export { sameMonth, isValidDateString };
+function createOutputPath(fileName) {
+  const fullPath = path.join(
+    path.dirname(fileName),
+    `${path.basename(fileName, '.xlsx')}_processed.xlsx`,
+  );
+  return fullPath;
+}
+
+export { sameMonth, isValidDateString, createOutputPath };

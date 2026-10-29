@@ -1,11 +1,6 @@
-import { sameMonth } from '../utils/date.js';
+import { sameMonth } from '../utils/utils.js';
 
-const SPECIAL_RUBROS = [
-  'Instalacion',
-  'Suscripcion',
-  'Instalación',
-  'Suscripción',
-];
+const SPECIAL_RUBROS = ['Instalacion', 'Suscripcion'];
 
 /**
  * @param {  Date} fechaAlta
