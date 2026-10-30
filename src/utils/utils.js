@@ -29,9 +29,9 @@ function isValidDateString(dateString) {
 
   // Check if JavaScript had to auto-correct/roll over any numbers
   return (
-    date.getUTCFullYear() === year &&
-    date.getUTCMonth() === month - 1 &&
-    date.getUTCDay() === day
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
   );
 }
 

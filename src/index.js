@@ -16,7 +16,9 @@ function main() {
   }
 
   if (!isValidDateString(previousBillingCycleStart)) {
-    throw new Error('Formato (yyyy-mm-dd) o fecha ciclo anterior no válido.');
+    throw new Error(
+      `Formato (yyyy-mm-dd) o fecha ciclo anterior no válido: ${previousBillingCycleStart}`,
+    );
   }
 
   if (!isValidFile(fileToProcess)) {
