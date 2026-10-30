@@ -1,4 +1,4 @@
-export function getColumnIndices(worksheet) {
+export function getInputColumns(worksheet) {
   const columns = {
     servicio: null,
     rubro: null,

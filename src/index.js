@@ -4,7 +4,7 @@ import {
   createOutputPath,
   isValidFile,
 } from './utils/utils.js';
-import { getColumnIndices, addOutputColumns } from './excel/columns.js';
+import { getInputColumns, addOutputColumns } from './excel/columns.js';
 import { processRows } from './excel/processRow.js';
 
 function main() {
@@ -39,7 +39,7 @@ async function processFile(fileName, previousCycleStartDate) {
   console.log(outputColumns);
 
   console.log(`Determinando columnas de datos actuales`);
-  const inputColumns = getColumnIndices(worksheet);
+  const inputColumns = getInputColumns(worksheet);
   console.log(inputColumns);
 
   //Obteniendo datos de servicios
