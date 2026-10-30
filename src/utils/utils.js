@@ -1,5 +1,5 @@
 import path from 'node:path';
-
+import fs from 'node:fs';
 //check if 2 dates are in the same month of the year
 
 /**
@@ -29,9 +29,9 @@ function isValidDateString(dateString) {
 
   // Check if JavaScript had to auto-correct/roll over any numbers
   return (
-    date.getFullYear() === year &&
-    date.getMonth() === month - 1 &&
-    date.getDate() === day
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDay() === day
   );
 }
 
@@ -43,4 +43,11 @@ function createOutputPath(fileName) {
   return fullPath;
 }
 
-export { sameMonth, isValidDateString, createOutputPath };
+function isValidFile(fileName) {
+  if (fs.existsSync(fileName)) {
+    return true;
+  }
+  return false;
+}
+
+export { sameMonth, isValidDateString, createOutputPath, isValidFile };

@@ -1,5 +1,9 @@
 import { getWorkbook } from './excel/workbook.js';
-import { isValidDateString, createOutputPath } from './utils/utils.js';
+import {
+  isValidDateString,
+  createOutputPath,
+  isValidFile,
+} from './utils/utils.js';
 import { getColumnIndices, addOutputColumns } from './excel/columns.js';
 import { processRows } from './excel/processRow.js';
 
@@ -12,20 +16,21 @@ function main() {
   }
 
   if (!isValidDateString(previousBillingCycleStart)) {
-   
     throw new Error('Formato (yyyy-mm-dd) o fecha ciclo anterior no válido.');
   }
 
-  processFile(fileToProcess, previousBillingCycleStart);
+  if (!isValidFile(fileToProcess)) {
+    throw new Error('file name or path is not valid.');
+  }
+
+  processFile(fileToProcess, new Date(previousBillingCycleStart));
 }
 
 /**
  * @param {string} fileName
- * @param {string} previousCycleStart
+ * @param {Date} previousCycleStartDate
  */
-async function processFile(fileName, previousCycleStart) {
-  const fechaInicioMesAnterior = new Date(previousCycleStart);
-
+async function processFile(fileName, previousCycleStartDate) {
   const workbook = await getWorkbook(fileName);
   const worksheet = workbook.worksheets[0];
 
@@ -37,7 +42,6 @@ async function processFile(fileName, previousCycleStart) {
   const inputColumns = getColumnIndices(worksheet);
   console.log(inputColumns);
 
-  //process Rows
   //Obteniendo datos de servicios
   console.log('Procesando registros...');
 
@@ -45,7 +49,7 @@ async function processFile(fileName, previousCycleStart) {
     worksheet,
     inputColumns,
     outputColumns,
-    fechaInicioMesAnterior,
+    previousCycleStartDate,
   );
 
   console.log(`${count} registros procesados.`);
