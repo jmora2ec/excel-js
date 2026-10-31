@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractCapacity } from '../src/utils.js';
+import { extractCapacity } from '../src/domain/services.js';
 
 const CAPACITY_REGEX = /(\d+)\s*(mbps|gbps)/i;
 
